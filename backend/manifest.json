@@ -1,0 +1,22 @@
+{
+    "name": "Message Scraper",
+    "version": "1.0.0",
+    "description": "Scrapes direct messages and emails from Gmail, Messenger, and Instagram in real time",
+    "manifest_version": 3,
+    "author": "",
+    "action":{
+        "default_popup": "index.html",
+        "default_title": "Message Scraper"
+    },
+    "content-scripts": [
+        {
+            "js": [
+                "messenger-content.js"
+            ],
+            "matches": [
+                "http://www.messenger.com/*"
+            ]
+
+        }
+    ]
+}

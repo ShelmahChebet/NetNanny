@@ -1,22 +1,20 @@
 {
-    "name": "Message Scraper",
-    "version": "1.0.0",
-    "description": "Scrapes direct messages and emails from Gmail, Messenger, and Instagram in real time",
     "manifest_version": 3,
-    "author": "",
-    "action":{
-        "default_popup": "index.html",
-        "default_title": "Message Scraper"
+    "name": "Youtube And Email Scraper",
+    "version": "1.0",
+    "permissions": ["scripting"],
+    "background": {
+      "service_worker": "background.js"
     },
-    "content-scripts": [
-        {
-            "js": [
-                "messenger-content.js"
-            ],
-            "matches": [
-                "http://www.messenger.com/*"
-            ]
-
-        }
-    ]
-}
+    "content_scripts": [
+      {
+        "matches": [""],
+        "js": ["content.js"],
+        "run_at": "document_end"
+      }
+    ],
+    "action": {
+    "default_popup": "popup.html"
+    }
+  }
+  

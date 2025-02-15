@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver import Chrome
 import time
 
-PATH = '/chromedriver.exe'
+PATH = '/chromedriver-win64.exe'
 driver = webdriver.Chrome()
 
 

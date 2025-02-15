@@ -8,7 +8,7 @@ module.exports = {
     './src/**/*.{ts,tsx}',
   ],
   prefix: "",
-  theme: {
+  /*theme: {
     container: {
       center: true,
       padding: "2rem",
@@ -18,7 +18,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
+        //border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
@@ -72,6 +72,6 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
-  },
+  },*/
   plugins: [require("tailwindcss-animate")],
 }

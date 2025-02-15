@@ -1,6 +1,6 @@
 import React from "react";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "../ui/card"//"@/components/ui/card";
+import { Badge } from "../ui/badge"//"@/components/ui/badge";
 import { Shield, AlertTriangle, TrendingUp } from "lucide-react";
 
 interface SummaryProps {

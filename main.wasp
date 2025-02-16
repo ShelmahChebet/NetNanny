@@ -45,3 +45,13 @@ route CaseRoute { path: "/cases", to: CasePage }
 page CasePage {
   component: import { CaseList } from "@src/components/dashboard/CaseList"
 }
+
+query getMessages {
+  // Specifies where the implementation for the query function is.
+  // The path `@src/queries` resolves to `src/queries.ts`.
+  // No need to specify an extension.
+  fn: import { getMessages } from "@src/queries",
+  // Tell Wasp that this query reads from the `Task` entity. Wasp will
+  // automatically update the results of this query when tasks are modified.
+  entities: [Message]
+}

@@ -1,15 +1,15 @@
 import React from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "../../lib/utils";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "../ui/button" //"@/components/ui/button"; 
+import { ScrollArea } from "../ui/scroll-area" // "@/components/ui/scroll-area";
+import { Separator } from "../ui/separator"//"@/components/ui/separator";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from   "../ui/tooltip"; 
 import {
   BarChart3,
   ClipboardList,

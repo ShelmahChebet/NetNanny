@@ -3,7 +3,7 @@ import TimeSelector from "./TimeSelector";
 import ThreatStats from "./ThreatStats";
 import CaseList from "./CaseList";
 import Summary from "./Summary";
-import { Card } from "@/components/ui/card";
+import { Card } from "../ui/card"
 import { Shield } from "lucide-react";
 
 interface MonitoringPanelProps {
@@ -96,7 +96,19 @@ const MonitoringPanel = ({
 }: MonitoringPanelProps) => {
   return (
     <div className="w-full h-full bg-gray-50 p-6 overflow-y-auto">
-      <div className="max-w-[1200px] mx-auto space-y-6">
+      <header className="w-full h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between fixed top-0 z-50">
+        <div className="flex items-center space-x-4">
+          <img
+            src="/NetNannyMascot.svg"
+            alt="Safety Icon"
+            className="w-10 h-10"
+          />
+          <h1 className="text-xl font-semibold text-gray-800">
+            NetNanny Safety Dashboard
+          </h1>
+        </div>
+      </header>
+      <div className="max-w-[1200px] mx-auto space-y-6 pt-20">
         <TimeSelector defaultTime={selectedTime} onTimeChange={onTimeChange} />
 
         <Card className="p-6 bg-white">

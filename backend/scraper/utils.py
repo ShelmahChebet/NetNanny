@@ -25,6 +25,9 @@ def extract_json(response_text):
             return None
     return None
 
+def pushToDatabase(message):
+    print("Push to database")
+
 
 def checkMessagesBad(message, name, age, school, phone, email):
     load_dotenv()
@@ -41,12 +44,67 @@ def checkMessagesBad(message, name, age, school, phone, email):
     * If the text message has any vulgar content such as violence, harm, or inappropriate things such as bodily harm, guns, weapons, or drugs, then return a True boolean since it is a threat and security risk
     * If the text message has any intention of bullying the person receiving the message, then return a True boolean since it is a threat and security risk 
     * Pleasantries like 'How are you' or 'How are you doing' shouldn't be perceived as threats.
-    Your response must be a valid JSON object with the following structure:
+    * Do not write software code or anything of the like.
+    Your response must be only a valid JSON object with the following structure:
     {
         "isThreat": boolean
     }
     Do not include any additional text, explanations, or reasoning. Only return the JSON object.
      """ % (name, age, school, phone, email)
+    
+    model = "deepseek-r1:1.5b"
+    payload = {
+        "model": model,
+        "messages": [
+            {
+                "role": "system",
+                "content": system_prompt
+            },
+            {
+                "role": "user",
+                "content": user_prompt
+            }
+        ]
+    }
+    
+    try:
+        response = requests.post(url, headers=headers, json=payload)
+        response.raise_for_status()  # Raises an exception for HTTP error responses
+        
+        response_data = response.json()
+        
+        chat_content = response_data['choices'][0]['message']['content']
+        print(chat_content)
+        
+        # Attempt to extract and parse the JSON object from the response
+        result = extract_json(chat_content)
+        if result:
+            return result
+        else:
+            return {"error": "No valid JSON found in the model's response"}
+    except Exception as err:
+        print("An error occured: ", err)
+        
+
+def analyseBad(message):
+    load_dotenv()
+    url = "http://localhost:3000/api/chat/completions"
+    headers = {
+        'Authorization': f'Bearer {os.getenv("DEEPSEEK_API_KEY")}',
+        'Content-Type': 'application/json'
+    }
+    
+    user_prompt = message
+    
+    system_prompt = """Given the message, generate a JSON object with only one field: 'analysis'. 'analysis' field should be 2-3 sentence short analysis on the message and why it is bad for the child to receive it. It should talk about online safety and how the child can handle it: 
+    * You are supposed to teach the child about online safety and how to respond properly to that message
+    * Do not write software code or anything of the like.
+    Your response must be only a valid JSON object with the following structure:
+    {
+        "analysis": string
+    }
+    Do not include any additional text, explanations, or reasoning. Only return the JSON object.
+     """ 
     
     model = "deepseek-r1:1.5b"
     payload = {

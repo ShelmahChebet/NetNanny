@@ -9,15 +9,16 @@ from dotenv import load_dotenv
 import os
 
 
-CHILD_NAME = "John Doe"
-CHILD_AGE = 10
-CHILD_EMAIL = "johndoe@gmail.com"
-CHILD_PHONE = 555555555
+CHILD_NAME = "Malcom"
+CHILD_AGE = 6
+CHILD_EMAIL = "malcomauben@gmail.com"
+CHILD_PHONE = 6138796342
 CHILD_SCHOOL = "Toronto Elementary School"
 
 def wait_and_find_element(driver, by, value, timeout=10):
     """Utility function to wait for and find an element"""
     try:
+        time.sleep(2)
         element = WebDriverWait(driver, timeout).until(
             EC.presence_of_element_located((by, value))
         )
@@ -25,7 +26,43 @@ def wait_and_find_element(driver, by, value, timeout=10):
     except TimeoutException:
         print(f"Timeout waiting for element: {value}")
         return None
+
+def handle_notification_modal(driver, timeout=10):
+    """
+    Detects and handles Instagram's notification modal by clicking the 'Not Now' button.
     
+    Args:
+        driver: Selenium WebDriver instance
+        timeout: Maximum time to wait for the modal in seconds (default: 10)
+        
+    Returns:
+        bool: True if modal was found and handled, False if modal didn't appear
+    """
+    try:
+        # Wait for either the modal div or the "Not Now" button to be visible
+        modal = WebDriverWait(driver, timeout).until(
+            EC.presence_of_element_located((
+                By.XPATH,
+                "//div[contains(@class, '_a9-w')] | //button[contains(@class, '_a9--') and contains(text(), 'Not Now')]"
+            ))
+        )
+        
+        # Find and click the "Not Now" button
+        not_now_button = driver.find_element(
+            By.XPATH,
+            "//button[contains(@class, '_a9--') and contains(text(), 'Not Now')]"
+        )
+        not_now_button.click()
+        
+        return True
+        
+    except TimeoutException:
+        # Modal didn't appear within the timeout period
+        return False
+    except Exception as e:
+        print(f"An error occurred while handling the notification modal: {str(e)}")
+        return False
+
 def click_all_messages(driver):
     """
     Clicks through all messages in Instagram DM list with delay
@@ -118,8 +155,8 @@ def click_all_messages(driver):
                     print(f"Error extracting messages: {str(e)}")
                 
                 # Wait before next message
-                print("Waiting 10 seconds...")
-                time.sleep(10)
+                print("Waiting 3 seconds...")
+                time.sleep(3)
                 
             except StaleElementReferenceException:
                 print("Message element became stale, skipping to next")
@@ -133,14 +170,47 @@ def click_all_messages(driver):
     except Exception as e:
         print(f"An error occurred: {str(e)}")
     
-def not_nowbutton():
+def not_nowbutton(driver, timeout):
     # Wait for navigation and save login info prompt
     try:
-        not_now_button = wait_and_find_element(driver, By.XPATH, "//button[contains(text(), 'Not Now')]")
-        if not_now_button:
-            not_now_button.click()
-    except:
-        print("No 'Not Now' button found, continuing...")
+        # Wait a bit for the modal to potentially appear
+        time.sleep(3)
+        
+        # Try multiple different selectors in case one fails
+        selectors = [
+            # Try exact class match first
+            "//button[@class='_a9-- *ap36 *a9_1'][text()='Not Now']",
+            # Try contains for each class
+            "//button[contains(@class, '_a9--') and contains(@class, '*ap36') and contains(@class, '*a9_1')][text()='Not Now']",
+            # Try just the base class and text
+            "//button[contains(@class, '_a9--')][text()='Not Now']",
+            # Try just by text
+            "//button[text()='Not Now']"
+        ]
+        
+        for selector in selectors:
+            try:
+                not_now_button = WebDriverWait(driver, timeout).until(
+                    EC.element_to_be_clickable((By.XPATH, selector))
+                )
+                
+                # If found, click three times
+                driver.execute_script("arguments[0].click();", not_now_button)
+                
+                print(f"Successfully clicked 'Not Now' button using selector: {selector}")
+                break
+                
+            except Exception as inner_e:
+                print(f"Selector {selector} failed: {str(inner_e)}")
+                continue
+        
+        # If we get here, none of the selectors worked
+        print("Could not find 'Not Now' button with any selector")
+        return False
+        
+    except Exception as e:
+        print(f"Error in not_nowbutton function: {str(e)}")
+        return False
 
 def main():
     try:
@@ -163,7 +233,8 @@ def main():
                 login_button.click()
     
         # Wait for navigation and save login info prompt
-        not_nowbutton()
+        not_nowbutton(driver,5)
+        #handle_notification_modal(driver)
     
         # Wait for and click messages button - using a more reliable selector
         messages_button = wait_and_find_element(
@@ -175,8 +246,10 @@ def main():
         if messages_button:
             messages_button.click()
             print("Successfully navigated to messages")
+            time.sleep(20)
         
-            not_nowbutton()
+            not_nowbutton(driver, 5)
+            #handle_notification_modal(driver)
         
             time.sleep(3)
         

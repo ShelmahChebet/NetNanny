@@ -3,8 +3,9 @@ import TimeSelector from "./TimeSelector";
 import ThreatStats from "./ThreatStats";
 import CaseList from "./CaseList";
 import Summary from "./Summary";
-import { Card } from "../ui/card"
+import { Card } from "../ui/card";
 import { Shield } from "lucide-react";
+import DashboardHeader from "../layout/DashboardHeader";
 
 interface MonitoringPanelProps {
   selectedTime?: string;
@@ -87,6 +88,12 @@ const defaultAiAnalysis = {
     "Monthly trend analysis reveals cyberbullying as the dominant threat (40% of all cases). Privacy concerns have decreased by 25% since implementing recommended security measures. New emerging threat pattern: Increase in spam accounts targeting teenage users.",
 };
 
+const defaultUser = {
+  name: "Sarah Wilson",
+  email: "sarah.wilson@example.com",
+  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+};
+
 const MonitoringPanel = ({
   selectedTime = "today",
   onTimeChange = () => {},
@@ -95,37 +102,32 @@ const MonitoringPanel = ({
   aiAnalysis = defaultAiAnalysis,
 }: MonitoringPanelProps) => {
   return (
-    <div className="w-full h-full bg-gray-50 p-6 overflow-y-auto">
-      <header className="w-full h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between fixed top-0 z-50">
-        <div className="flex items-center space-x-4">
-          <img
-            src="/NetNannyMascot.svg"
-            alt="Safety Icon"
-            className="w-10 h-10"
-          />
-          <h1 className="text-xl font-semibold text-gray-800">
-            NetNanny Safety Dashboard
-          </h1>
-        </div>
-      </header>
-      <div className="max-w-[1200px] mx-auto space-y-6 pt-20">
-        <TimeSelector defaultTime={selectedTime} onTimeChange={onTimeChange} />
+    <div className="min-h-screen bg-gray-100">
+      {/* Use the DashboardHeader component */}
+      <DashboardHeader user={defaultUser} notifications={3} />
 
-        <Card className="p-6 bg-white">
-          <div className="flex items-start gap-3">
-            <Shield className="h-6 w-6 text-blue-500 mt-1" />
-            <div>
-              <h3 className="text-lg font-semibold mb-2">AI Safety Analysis</h3>
-              <p className="text-gray-600">{aiAnalysis[selectedTime]}</p>
+      {/* Main content */}
+      <div className="w-full h-full bg-gray-50 p-6 overflow-y-auto">
+        {/* Add padding-top to account for the fixed header */}
+        <div className="max-w-[1200px] mx-auto space-y-6 pt-20">
+          <TimeSelector defaultTime={selectedTime} onTimeChange={onTimeChange} />
+
+          <Card className="p-6 bg-white">
+            <div className="flex items-start gap-3">
+              <Shield className="h-6 w-6 text-blue-500 mt-1" />
+              <div>
+                <h3 className="text-lg font-semibold mb-2">AI Safety Analysis</h3>
+                <p className="text-gray-600">{aiAnalysis[selectedTime]}</p>
+              </div>
             </div>
+          </Card>
+
+          <Summary />
+
+          <div className="grid gap-6">
+            <ThreatStats data={threatData} />
+            <CaseList selectedTime={selectedTime} />
           </div>
-        </Card>
-
-        <Summary />
-
-        <div className="grid gap-6">
-          <ThreatStats data={threatData} />
-          <CaseList selectedTime={selectedTime} />
         </div>
       </div>
     </div>

@@ -5,8 +5,9 @@ import routes from "./tempo-routes";
 import MonitoringPanel from "./components/dashboard/MonitoringPanel";
 import CaseList from "./components/dashboard/CaseList";
 import Threats from "./components/threatPage/Threats"
-import Summary from "./components/dashboard/Summary";
 import Safety from "./components/safetyPage/Safety";
+import Support from "./components/chatPage/Support";
+import Settings from "./components/settings/Settings";
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
           <Route path="/cases" element={<CaseList />} />
           <Route path="/stats" element={<Threats />} />
           <Route path="/reports" element={<Safety />} />
+          <Route path="/chat" element={<Support />} />
+          <Route path="/settings" element={<Settings />} />
+
 
 
 

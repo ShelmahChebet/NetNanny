@@ -9,6 +9,7 @@ import {
 } from "../ui/accordion";
 import { Avatar } from "../ui/avatar";
 import { AlertTriangle, MessageCircle, Shield } from "lucide-react";
+import DashboardHeader from "../layout/DashboardHeader";
 
 interface CaseItem {
   id: string;
@@ -126,12 +127,19 @@ const getSeverityColor = (severity: string) => {
       return "bg-gray-100 text-gray-800";
   }
 };
+const defaultUser = {
+  name: "Sarah Wilson",
+  email: "sarah.wilson@example.com",
+  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+};
 
 const CaseList = ({ selectedTime = "today" }: CaseListProps) => {
   const cases = getCasesByTime(selectedTime);
 
   return (
-    <div className="w-full bg-white p-6 rounded-lg shadow">
+    <div className="min-h-screen bg-gray-100">
+      <DashboardHeader user={defaultUser} notifications={3} />
+    <div className="pt-20 w-full bg-white p-6 rounded-lg shadow">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-semibold text-gray-800">Recent Cases</h2>
         <Badge variant="outline" className="px-3 py-1">
@@ -197,6 +205,7 @@ const CaseList = ({ selectedTime = "today" }: CaseListProps) => {
           </AccordionItem>
         ))}
       </Accordion>
+    </div>
     </div>
   );
 };

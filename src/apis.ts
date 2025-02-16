@@ -4,6 +4,7 @@ import { HandleData } from "wasp/server/api";
 
 export const handleData: HandleData = async (req: Request, res: Response, context) => {
   try {
+    console.log("Received data:", req.body);
     const { data } = req.body;
 
     if (!data) {

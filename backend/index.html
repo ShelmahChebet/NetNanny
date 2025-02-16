@@ -3,14 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Message Scraper</title>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <title>Net Nanny</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            width: 250px;
+            padding: 15px;
+            background-color: #f8f9fa;
+        }
+        h1 {
+            font-size: 18px;
+            color: #333;
+        }
+        p {
+            font-size: 14px;
+            color: #666;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Message scraper</h1>
-    <p>Test</p>
-    <div id="screenshot">
-        
-    </div>
+    <h1>Net Nanny</h1>
+    <p>Protect yourself online! Click below to scan for harmful messages.</p>
+    <button id="checkThreats">Check for Threats</button>
+    
+    <script src="popup.js"></script>
 </body>
 </html>

@@ -9,3 +9,11 @@ node_modules/
 # Don't ignore example dotenv files.
 !.env.example
 !.env.*.example
+
+__pycache__/
+
+bin/
+
+backend/.DS_Store
+backend/scraper/.venv/
+backend/scraper/~/

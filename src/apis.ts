@@ -1,7 +1,9 @@
 import { MiddlewareConfigFn } from "wasp/server";
 import { Request, Response } from "express";
 import { HandleData } from "wasp/server/api";
+import { PrismaClient } from '@prisma/client'
 
+const prisma = new PrismaClient()
 export const handleData: HandleData = async (req: Request, res: Response, context) => {
   try {
     console.log("Received data:", req.body);
@@ -20,6 +22,20 @@ export const handleData: HandleData = async (req: Request, res: Response, contex
     res.status(500).json({ error: "Internal server error." });
   }
 };
+
+async function postMessage(
+  text: string,
+  user_id: number,
+  analysis: string,
+) {
+  await prisma.message.create({
+    data: {
+      text,
+      user_id,
+      analysis,
+    },
+  });
+}
 
 
 export const processApiMiddleware: MiddlewareConfigFn = (config) => {

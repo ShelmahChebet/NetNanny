@@ -106,14 +106,10 @@ const Sidebar = ({
                           className={cn(
                             "w-full justify-start gap-2 py-6",
                             isMinimized && "justify-center px-0",
+                            location.pathname === item.href && "bg-accent"
                           )}
                           onClick={() => navigate(item.href)}
                           data-active={location.pathname === item.href}
-                          className={cn(
-                            "w-full justify-start gap-2 py-6",
-                            isMinimized && "justify-center px-0",
-                            location.pathname === item.href && "bg-accent",
-                          )}
                         >
                           {item.icon}
                           {!isMinimized && <span>{item.title}</span>}

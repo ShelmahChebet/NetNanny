@@ -3,6 +3,8 @@ import DashboardHeader from "./layout/DashboardHeader";
 import Sidebar from "./layout/Sidebar";
 import MonitoringPanel from "./dashboard/MonitoringPanel";
 import SupportChat from "./chat/SupportChat";
+import { AuthUser } from 'wasp/auth'
+
 
 interface HomeProps {
   user?: {
@@ -84,7 +86,7 @@ const defaultCases = [
   },
 ];
 
-const Home = () => {
+const Home = ({ user }: { user: AuthUser }) => {
   const [isSidebarMinimized, setIsSidebarMinimized] = React.useState(false);
   const [isChatMinimized, setIsChatMinimized] = React.useState(false);
 

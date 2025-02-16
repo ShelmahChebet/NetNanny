@@ -2,6 +2,7 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
+import { logout } from 'wasp/client/auth'
 
 import {
   DropdownMenu,
@@ -57,6 +58,7 @@ const DashboardHeader = ({
             </Badge>
           )}
         </Button>
+        <button onClick={logout}>Logout</button>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

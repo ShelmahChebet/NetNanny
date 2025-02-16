@@ -55,3 +55,16 @@ query getMessages {
   // automatically update the results of this query when tasks are modified.
   entities: [Message]
 }
+
+
+api handleData {
+  fn: import { handleData } from "@src/apis",
+  httpRoute: (POST, "/data/api")
+}
+
+
+// middleware to enable CORS
+apiNamespace process {
+  middlewareConfigFn: import { processApiMiddleware } from "@src/apis",
+  path: "/data/api"
+}

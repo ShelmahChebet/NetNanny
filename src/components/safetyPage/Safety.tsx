@@ -2,6 +2,7 @@ import React from "react";
 import { Card } from "../../components/ui/card";
 import { Shield } from "lucide-react";
 import TimeSelector from "../dashboard/TimeSelector";
+import DashboardHeader from "../layout/DashboardHeader";
 
 interface SafetyProps {
   selectedTime?: string;
@@ -26,8 +27,11 @@ const Safety = ({
   },
 }: SafetyProps) => {
   return (
-    <div className="w-full h-full bg-gray-50 p-6 overflow-y-auto">
-      <div className="max-w-[1200px] mx-auto space-y-6 pt-20">
+    <div className="w-full h-full bg-gray-50 min-h-screen">
+      {/* Dashboard Header */}
+      <DashboardHeader user={{ name: "Sarah Wilson", email: "sarah.wilson@example.com", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah" }} notifications={3} />
+
+      <div className="max-w-[1200px] mx-auto space-y-6 p-6 pt-20">
         <h1 className="text-2xl font-bold mb-6">AI Safety Analysis</h1>
 
         {/* Time Selector */}
@@ -39,7 +43,7 @@ const Safety = ({
             <Shield className="h-6 w-6 text-blue-500 mt-1" />
             <div>
               <h3 className="text-lg font-semibold mb-2">AI Safety Analysis</h3>
-              <p className="text-gray-600">{aiAnalysis[selectedTime]}</p>
+              <p className="text-gray-600">{aiAnalysis[selectedTime] || "No data available for this time period."}</p>
             </div>
           </div>
         </Card>

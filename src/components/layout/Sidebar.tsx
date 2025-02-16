@@ -1,15 +1,15 @@
 import React from "react";
 import { cn } from "../../lib/utils";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button } from "../ui/button" //"@/components/ui/button"; 
-import { ScrollArea } from "../ui/scroll-area" // "@/components/ui/scroll-area";
-import { Separator } from "../ui/separator"//"@/components/ui/separator";
+import { Button } from "../ui/button";
+import { ScrollArea } from "../ui/scroll-area";
+import { Separator } from "../ui/separator";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from   "../ui/tooltip"; 
+} from "../ui/tooltip";
 import {
   BarChart3,
   ClipboardList,
@@ -81,6 +81,7 @@ const Sidebar = ({
 }: SidebarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+
   return (
     <div
       className={cn(
@@ -93,9 +94,11 @@ const Sidebar = ({
         <div className="space-y-4 py-4">
           <div className="px-3 py-2">
             <div className="space-y-1">
-              <h2 className="mb-4 px-4 text-xl font-semibold tracking-tight">
-                Navigation
-              </h2>
+              {!isMinimized && (
+                <h2 className="mb-4 px-4 text-xl font-semibold tracking-tight">
+                  Navigation
+                </h2>
+              )}
               <TooltipProvider>
                 {items.map((item, index) => (
                   <div key={index}>
@@ -111,7 +114,9 @@ const Sidebar = ({
                           onClick={() => navigate(item.href)}
                           data-active={location.pathname === item.href}
                         >
-                          {item.icon}
+                          <div className="flex items-center justify-center">
+                            {item.icon}
+                          </div>
                           {!isMinimized && <span>{item.title}</span>}
                         </Button>
                       </TooltipTrigger>
@@ -136,7 +141,9 @@ const Sidebar = ({
           )}
           onClick={() => navigate("/settings")}
         >
-          <Settings className="w-5 h-5" />
+          <div className="flex items-center justify-center">
+            <Settings className="w-5 h-5" />
+          </div>
           {!isMinimized && <span>Settings</span>}
         </Button>
         <Button
@@ -147,12 +154,14 @@ const Sidebar = ({
           )}
           onClick={onMinimizeToggle}
         >
-          <ChevronLeft
-            className={cn(
-              "w-5 h-5 transition-transform",
-              isMinimized && "rotate-180",
-            )}
-          />
+          <div className="flex items-center justify-center">
+            <ChevronLeft
+              className={cn(
+                "w-5 h-5 transition-transform",
+                isMinimized && "rotate-180",
+              )}
+            />
+          </div>
           {!isMinimized && <span>Minimize</span>}
         </Button>
       </div>

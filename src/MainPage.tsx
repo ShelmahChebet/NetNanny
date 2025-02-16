@@ -4,7 +4,7 @@ import './Main.css'
 import { Message } from 'wasp/entities'
 import { getMessages, useQuery } from 'wasp/client/operations'
 
-export const MainPage = () => {
+const MainPage = () => {
   console.log("hello from mainpage.tsx")
 
   const { data: messages, isLoading, error } = useQuery(getMessages)
@@ -47,3 +47,5 @@ export const MainPage = () => {
     </div>
   )
 }
+
+export default MainPage;

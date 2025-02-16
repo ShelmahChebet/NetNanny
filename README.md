@@ -33,4 +33,13 @@ This project runs on **Wasp**, so to get started, you'll need to install **Wasp*
      python3 -m flask run
      ```
 
+5. **Set Up Chrome Extension:**
+   - Open Chrome extension tools and enable **Developer Mode**.
+   - Click on the **"Load unpacked"** button and select the `backend` folder.
+   - This will show the **NetNanny** browser extension on the browser extension panel.
+
+6. **Run Scrapers:**
+   - To run the scrapers, click on the corresponding button in the extension panel.
+
 Now the project should be set up and running.
+

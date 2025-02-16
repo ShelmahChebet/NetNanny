@@ -182,7 +182,7 @@ const CaseList = ({ selectedTime = "today" }: CaseListProps) => {
                     <div className="flex items-start space-x-2">
                       <AlertTriangle className="h-5 w-5 text-yellow-500 mt-0.5" />
                       <div>
-                        <p className="font-medium">Incident Description</p>
+                        <p className="font-medium">Texts sent</p>
                         <p className="text-gray-600">{caseItem.description}</p>
                       </div>
                     </div>

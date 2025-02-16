@@ -3,6 +3,10 @@ import DashboardHeader from "./layout/DashboardHeader";
 import Sidebar from "./layout/Sidebar";
 import MonitoringPanel from "./dashboard/MonitoringPanel";
 import SupportChat from "./chat/SupportChat";
+import getMessages from "../queries";
+import { useQuery } from 'wasp/client/operations';
+
+const { data: allMessages, isLoading, error } = await useQuery(getMessages);
 
 interface HomeProps {
   user?: {
@@ -68,7 +72,7 @@ const defaultCases = [
     severity: "high",
     description: "Multiple hostile comments detected on recent post",
     aiAnalysis:
-      "Pattern indicates coordinated harassment from multiple accounts. Recommended actions: Report accounts, enable comment filtering.",
+      allMessages[0].analysis,
     userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=1",
   },
   {

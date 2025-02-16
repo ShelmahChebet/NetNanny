@@ -17,3 +17,13 @@ bin/
 backend/.DS_Store
 backend/scraper/.venv/
 backend/scraper/~/
+.DS_Store
+
+__pycache__/
+
+bin/
+
+backend/.DS_Store
+backend/scraper/.venv/
+backend/scraper/~/
+.DS_Store

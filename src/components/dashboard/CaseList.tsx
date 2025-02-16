@@ -1,13 +1,13 @@
 import React from "react";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card } from  "../ui/card";//"@/components/ui/card";
+import { Badge } from "../ui/badge"//"@/components/ui/badge";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Avatar } from "@/components/ui/avatar";
+} from "../ui/accordion";
+import { Avatar } from "../ui/avatar";
 import { AlertTriangle, MessageCircle, Shield } from "lucide-react";
 
 interface CaseItem {

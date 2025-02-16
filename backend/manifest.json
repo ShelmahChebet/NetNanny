@@ -1,20 +1,14 @@
 {
-    "manifest_version": 3,
-    "name": "Youtube And Email Scraper",
-    "version": "1.0",
-    "permissions": ["scripting"],
-    "background": {
-      "service_worker": "background.js"
-    },
-    "content_scripts": [
-      {
-        "matches": [""],
-        "js": ["content.js"],
-        "run_at": "document_end"
-      }
-    ],
-    "action": {
-    "default_popup": "popup.html"
-    }
+  "manifest_version": 3,
+  "name": "Net Nanny",
+  "version": "1.0",
+  "description": "Detect harmful messages and keep users safe online.",
+  "permissions": ["activeTab", "storage"],
+  "host_permissions": ["http://127.0.0.1:5000/*"],
+  "action": {
+      "default_popup": "index.html"
+  },
+  "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'none'"
   }
-  
+}

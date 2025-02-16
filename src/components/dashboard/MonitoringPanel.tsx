@@ -25,7 +25,7 @@ interface MonitoringPanelProps {
     timestamp: string;
     platform: string;
     threatType: string;
-    severity: "low" | "medium" | "high";
+    severity: string;
     description: string;
     aiAnalysis: string;
     userAvatar: string;

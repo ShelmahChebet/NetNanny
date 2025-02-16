@@ -2,8 +2,10 @@ import waspLogo from './waspLogo.png'
 import './Main.css'
 
 export const MainPage = () => {
+  console.log("hello from mainpage.tsx")
   return (
     <div className="container">
+      <h1>hello</h1>
       <main>
         <div className="logo">
           <img src={waspLogo} alt="wasp" />

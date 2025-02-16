@@ -1,5 +1,5 @@
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   // Wasp requires that the url is set to the DATABASE_URL environment variable.
   url      = env("DATABASE_URL")
 }
@@ -10,8 +10,19 @@ generator client {
 }
 model User {
     id Int @id @default(autoincrement())   
-    username String 
-    password String
-    name     String
-    email    String 
+    username            String @unique
+    password            String
+    email               String 
+    phone_number        String
+    address             String
+    school              String
+    parent_name         String
+    parent_phone_number String
+    parent_email        String
+}
+model Messages {
+    id        Int @id @default(autoincrement())
+    user_id   Int
+    text      String
+    analysis  String
 }

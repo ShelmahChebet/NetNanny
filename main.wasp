@@ -1,11 +1,47 @@
+// app NetNanny {
+//   wasp: {
+//     version: "^0.16.2"
+//   },
+//   title: "NetNanny"
+// }
+
+// route RootRoute { path: "/", to: Home }
+// page Home {
+//   // We specify that the React implementation of the page is exported from
+//   // `src/Home.tsx`. This statement uses standard JS import syntax.
+//   // Use `@src` to reference files inside the `src` folder.
+//   component: import { Home } from "@src/comoponents/home"
+// }
 app NetNanny {
   wasp: {
     version: "^0.16.2"
   },
-  title: "NetNanny"
+  title: "NetNanny",
+  auth: {
+    // Tells Wasp which entity to use for storing users.
+    userEntity: User,
+    methods: {
+      // Enable username and password auth.
+      usernameAndPassword: {}
+    },
+    // We'll see how this is used in a bit.
+    onAuthFailedRedirectTo: "/login"
+  }
+  
 }
 
 route RootRoute { path: "/", to: MainPage }
 page MainPage {
+  authRequired: true,
   component: import { MainPage } from "@src/MainPage"
+}
+
+route MonitoringRoute { path: "/Monitoring", to: MonitoringPage }
+page MonitoringPage {
+  component: import { MonitoringPanel } from "@src/components/dashboard/MonitoringPanel"
+}
+
+route CaseRoute { path: "/cases", to: CasePage }
+page CasePage {
+  component: import { CaseList } from "@src/components/dashboard/CaseList"
 }

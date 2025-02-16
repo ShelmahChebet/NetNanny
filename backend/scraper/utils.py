@@ -25,8 +25,32 @@ def extract_json(response_text):
             return None
     return None
 
-def pushToDatabase(message):
-    print("Push to database")
+def pushToDatabase(user_id, analysis, text):
+    try:
+        
+        url = "http://localhost:3001/data/api"
+        payload = {
+            "user_id": user_id,
+            "analysis": analysis,
+            "text": text
+        }
+
+        headers = {
+            "Content-Type": "application/json"
+        }
+    
+        response = requests.post(url, json=payload, headers=headers)
+        
+        if(response.status_code == 200):
+            print(response)
+            return response
+        else:
+            print("Error: ", response)
+            
+
+    except Exception as e:
+        return "Error: ", {e}
+        
 
 
 def checkMessagesBad(message, name, age, school, phone, email):
@@ -45,6 +69,7 @@ def checkMessagesBad(message, name, age, school, phone, email):
     * If the text message has any intention of bullying the person receiving the message, then return a True boolean since it is a threat and security risk 
     * Pleasantries like 'How are you' or 'How are you doing' shouldn't be perceived as threats.
     * Do not write software code or anything of the like.
+    * Make it less than 10 words
     Your response must be only a valid JSON object with the following structure:
     {
         "isThreat": boolean
@@ -96,7 +121,7 @@ def analyseBad(message):
     
     user_prompt = message
     
-    system_prompt = """Given the message, generate a JSON object with only one field: 'analysis'. 'analysis' field should be 2-3 sentence short analysis on the message and why it is bad for the child to receive it. It should talk about online safety and how the child can handle it: 
+    system_prompt = """Given the message, generate a JSON object with only one field: 'analysis'. 'analysis' field should be 2-3 sentence short analysis on the message and why it is bad for the child to receive it. It should talk about online safety and how the child can handle it. Make it less than 50 words: 
     * You are supposed to teach the child about online safety and how to respond properly to that message
     * Do not write software code or anything of the like.
     Your response must be only a valid JSON object with the following structure:

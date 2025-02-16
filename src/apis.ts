@@ -7,14 +7,8 @@ export const handleData: HandleData = async (req: Request, res: Response, contex
     console.log("Received data:", req.body);
     const { data } = req.body;
 
-    if (!data) {
-      return res.status(400).json({ error: "Missing required data." });
-    }
 
-    // Process the data (modify this based on your use case)
-    const processedData = data.toUpperCase();
-
-    res.status(200).json({ message: "Data processed successfully", processedData });
+    res.status(200).json({ message: "Data processed successfully", data });
   } catch (error) {
     console.error("Error handling data:", error);
     res.status(500).json({ error: "Internal server error." });

@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
-from utils import checkMessagesBad
+from utils import checkMessagesBad, pushToDatabase, analyseBad
 import time
 from dotenv import load_dotenv
 import os
@@ -15,7 +15,7 @@ CHILD_EMAIL = "malcomauben@gmail.com"
 CHILD_PHONE = 6138796342
 CHILD_SCHOOL = "Toronto Elementary School"
 
-def wait_and_find_element(driver, by, value, timeout=10):
+def wait_and_find_element(driver, by, value, timeout=5):
     """Utility function to wait for and find an element"""
     try:
         time.sleep(2)
@@ -135,7 +135,10 @@ def click_all_messages(driver):
                                 # check if the message is bad
                                 message_result = checkMessagesBad(message_text, CHILD_NAME, CHILD_AGE, CHILD_SCHOOL, CHILD_PHONE, CHILD_EMAIL)
                                 if(message_result['isThreat'] == True):
+                                    # Get analysis
+                                    analysis = analyseBad(message_text)
                                     # if messages is bad or returns true
+                                    pushToDatabase(username, analysis, message_text)
                                     print("Message is a threat")
                                     # should push to the database
                                 else:
@@ -155,8 +158,8 @@ def click_all_messages(driver):
                     print(f"Error extracting messages: {str(e)}")
                 
                 # Wait before next message
-                print("Waiting 3 seconds...")
-                time.sleep(3)
+                #print("Waiting 3 seconds...")
+                #time.sleep(3)
                 
             except StaleElementReferenceException:
                 print("Message element became stale, skipping to next")
@@ -194,7 +197,7 @@ def not_nowbutton(driver, timeout):
                     EC.element_to_be_clickable((By.XPATH, selector))
                 )
                 
-                # If found, click three times
+                
                 driver.execute_script("arguments[0].click();", not_now_button)
                 
                 print(f"Successfully clicked 'Not Now' button using selector: {selector}")
@@ -246,12 +249,10 @@ def main():
         if messages_button:
             messages_button.click()
             print("Successfully navigated to messages")
-            time.sleep(20)
+            time.sleep(5)
         
             not_nowbutton(driver, 5)
             #handle_notification_modal(driver)
-        
-            time.sleep(3)
         
             click_all_messages(driver)
             return "Check your dashboard now."

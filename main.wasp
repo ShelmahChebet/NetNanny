@@ -5,7 +5,50 @@ app NetNanny {
   title: "NetNanny"
 }
 
+route HomeRoute { path: "/home", to: Home }
+page Home {
+  // We specify that the React implementation of the page is exported from
+  // `src/Home.tsx`. This statement uses standard JS import syntax.
+  // Use `@src` to reference files inside the `src` folder.
+  component: import Home from "@src/components/home"
+}
+
+
 route RootRoute { path: "/", to: MainPage }
 page MainPage {
-  component: import { MainPage } from "@src/MainPage"
+  // authRequired: true,
+  component: import MainPage from "@src/MainPage"
+}
+
+route MonitoringRoute { path: "/Monitoring", to: MonitoringPage }
+page MonitoringPage {
+  component: import MonitoringPanel from "@src/components/dashboard/MonitoringPanel"
+}
+
+route CaseRoute { path: "/cases", to: CasePage }
+page CasePage {
+  component: import CaseList from "@src/components/dashboard/CaseList"
+}
+
+query getMessages {
+  // Specifies where the implementation for the query function is.
+  // The path `@src/queries` resolves to `src/queries.ts`.
+  // No need to specify an extension.
+  fn: import { getMessages } from "@src/queries",
+  // Tell Wasp that this query reads from the `Task` entity. Wasp will
+  // automatically update the results of this query when tasks are modified.
+  entities: [Message]
+}
+
+
+api handleData {
+  fn: import { handleData } from "@src/apis",
+  httpRoute: (POST, "/data/api")
+}
+
+
+// middleware to enable CORS
+apiNamespace process {
+  middlewareConfigFn: import { processApiMiddleware } from "@src/apis",
+  path: "/data/api"
 }

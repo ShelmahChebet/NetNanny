@@ -1,9 +1,17 @@
 import waspLogo from './waspLogo.png'
 import './Main.css'
 
-export const MainPage = () => {
+import { Message } from 'wasp/entities'
+import { getMessages, useQuery } from 'wasp/client/operations'
+
+const MainPage = () => {
+  console.log("hello from mainpage.tsx")
+
+  const { data: messages, isLoading, error } = useQuery(getMessages)
+
   return (
     <div className="container">
+      <h1>hello</h1>
       <main>
         <div className="logo">
           <img src={waspLogo} alt="wasp" />
@@ -39,3 +47,5 @@ export const MainPage = () => {
     </div>
   )
 }
+
+export default MainPage;

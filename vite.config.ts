@@ -18,9 +18,9 @@ export default defineConfig({
     entries: ["src/main.tsx", "src/tempobook/**/*"],
   },
   plugins: [
-    react({
-      plugins: conditionalPlugins,
-    }),
+    // react({
+    //   plugins: conditionalPlugins,
+    // }),
     tempo(),
     tailwindcss(),
   ],

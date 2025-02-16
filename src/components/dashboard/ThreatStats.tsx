@@ -1,6 +1,6 @@
 import React from "react";
-import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card } from "../ui/card"//"@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"//"@/components/ui/tabs";
 import { BarChart, LineChart, PieChart } from "lucide-react";
 
 interface ThreatStatsProps {

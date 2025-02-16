@@ -3,8 +3,9 @@ import TimeSelector from "./TimeSelector";
 import ThreatStats from "./ThreatStats";
 import CaseList from "./CaseList";
 import Summary from "./Summary";
-import { Card } from "@/components/ui/card";
+import { Card } from "../ui/card";
 import { Shield } from "lucide-react";
+import DashboardHeader from "../layout/DashboardHeader";
 
 interface MonitoringPanelProps {
   selectedTime?: string;
@@ -24,7 +25,7 @@ interface MonitoringPanelProps {
     timestamp: string;
     platform: string;
     threatType: string;
-    severity: "low" | "medium" | "high";
+    severity: string;
     description: string;
     aiAnalysis: string;
     userAvatar: string;
@@ -87,6 +88,12 @@ const defaultAiAnalysis = {
     "Monthly trend analysis reveals cyberbullying as the dominant threat (40% of all cases). Privacy concerns have decreased by 25% since implementing recommended security measures. New emerging threat pattern: Increase in spam accounts targeting teenage users.",
 };
 
+const defaultUser = {
+  name: "Sarah Wilson",
+  email: "sarah.wilson@example.com",
+  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+};
+
 const MonitoringPanel = ({
   selectedTime = "today",
   onTimeChange = () => {},
@@ -95,25 +102,28 @@ const MonitoringPanel = ({
   aiAnalysis = defaultAiAnalysis,
 }: MonitoringPanelProps) => {
   return (
-    <div className="w-full h-full bg-gray-50 p-6 overflow-y-auto">
-      <div className="max-w-[1200px] mx-auto space-y-6">
-        <TimeSelector defaultTime={selectedTime} onTimeChange={onTimeChange} />
+    <div className="min-h-screen bg-gray-100">
+      {/* No more duplicate header */}
+      <div className="w-full h-full bg-gray-50 p-6 overflow-y-auto">
+        <div className="max-w-[1200px] mx-auto space-y-6 pt-20">
+          <TimeSelector defaultTime={selectedTime} onTimeChange={onTimeChange} />
 
-        <Card className="p-6 bg-white">
-          <div className="flex items-start gap-3">
-            <Shield className="h-6 w-6 text-blue-500 mt-1" />
-            <div>
-              <h3 className="text-lg font-semibold mb-2">AI Safety Analysis</h3>
-              <p className="text-gray-600">{aiAnalysis[selectedTime]}</p>
+          <Card className="p-6 bg-white">
+            <div className="flex items-start gap-3">
+              <Shield className="h-6 w-6 text-blue-500 mt-1" />
+              <div>
+                <h3 className="text-lg font-semibold mb-2">AI Safety Analysis</h3>
+                <p className="text-gray-600">{aiAnalysis[selectedTime]}</p>
+              </div>
             </div>
+          </Card>
+
+          <Summary />
+
+          <div className="grid gap-6">
+            <ThreatStats data={threatData} />
+            <CaseList selectedTime={selectedTime} />
           </div>
-        </Card>
-
-        <Summary />
-
-        <div className="grid gap-6">
-          <ThreatStats data={threatData} />
-          <CaseList selectedTime={selectedTime} />
         </div>
       </div>
     </div>

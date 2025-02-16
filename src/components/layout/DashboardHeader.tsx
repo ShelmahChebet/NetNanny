@@ -1,6 +1,8 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
+import { Link } from "react-router-dom";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,13 +32,19 @@ const DashboardHeader = ({
   notifications = 3,
 }: DashboardHeaderProps) => {
   return (
-    <header className="w-full h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between fixed top-0 z-50">
+  <header className="w-full h-16 bg-white border-b border-gray-200 px-6 flex items-center justify-between fixed top-0 z-50">
       <div className="flex items-center space-x-4">
+      <Link to="/">
+      <img
+        src="/NetNannyMascot.svg"
+        alt="Safety Icon"
+        className="w-10 h-10 cursor-pointer" // Add cursor-pointer for better UX
+      />
+    </Link>
         <h1 className="text-xl font-semibold text-gray-800">
-          Safety Dashboard
+          NetNanny Safety Dashboard
         </h1>
       </div>
-
       <div className="flex items-center space-x-4">
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-5 w-5" />
@@ -95,4 +103,4 @@ const DashboardHeader = ({
   );
 };
 
-export default DashboardHeader;
+export default DashboardHeader

@@ -25,13 +25,14 @@ def extract_json(response_text):
             return None
     return None
 
-def pushToDatabase(user_id, analysis, text):
+def pushToDatabase(user_name, analysis, text):
     try:
         
         url = "http://localhost:3001/data/api"
         payload = {
-            "user_id": user_id,
-            "analysis": analysis,
+            "suspicious_name": user_name,
+            "user_id": 1,
+            "analysis": analysis["analysis"],
             "text": text
         }
 

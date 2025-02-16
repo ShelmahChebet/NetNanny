@@ -2,6 +2,7 @@ import React from "react";
 import Summary from "../dashboard/Summary";
 import ThreatStats from "../dashboard/ThreatStats";
 import { Shield } from "lucide-react";
+import DashboardHeader from "../layout/DashboardHeader";
 
 const Threats = () => {
   const customData = {
@@ -36,25 +37,30 @@ const Threats = () => {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Summary Dashboard</h1>
+    <div className="min-h-screen bg-white-100">
+      {/* Dashboard Header */}
+      <DashboardHeader user={{ name: "Sarah Wilson", email: "sarah.wilson@example.com", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah" }} notifications={3} />
+      
+      <div className="p-6 pt-16">
+        <h1 className="text-2xl font-bold mb-6">Summary Dashboard</h1>
 
-      {/* Card for Total Threats */}
-      <div className="p-6 flex items-center justify-between bg-white rounded-lg shadow-md mb-6">
-        <div>
-          <p className="text-sm font-medium text-muted-foreground">
-            Total Threats
-          </p>
-          <h3 className="text-2xl font-bold mt-2">{customData.totalThreats}</h3>
+        {/* Card for Total Threats */}
+        <div className="p-6 flex items-center justify-between bg-white rounded-lg shadow-md mb-6">
+          <div>
+            <p className="text-sm font-medium text-muted-foreground">
+              Total Threats
+            </p>
+            <h3 className="text-2xl font-bold mt-2">{customData.totalThreats}</h3>
+          </div>
+          <Shield className="h-8 w-8 text-blue-500" />
         </div>
-        <Shield className="h-8 w-8 text-blue-500" />
+
+        {/* Include the Summary component */}
+        <Summary data={customData} />
+
+        {/* Include the ThreatStats component */}
+        <ThreatStats data={threatStatsData} />
       </div>
-
-      {/* Include the Summary component */}
-      <Summary data={customData} />
-
-      {/* Include the ThreatStats component */}
-      <ThreatStats data={threatStatsData} />
     </div>
   );
 };

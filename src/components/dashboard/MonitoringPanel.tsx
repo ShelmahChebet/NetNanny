@@ -103,12 +103,8 @@ const MonitoringPanel = ({
 }: MonitoringPanelProps) => {
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Use the DashboardHeader component */}
-      <DashboardHeader user={defaultUser} notifications={3} />
-
-      {/* Main content */}
+      {/* No more duplicate header */}
       <div className="w-full h-full bg-gray-50 p-6 overflow-y-auto">
-        {/* Add padding-top to account for the fixed header */}
         <div className="max-w-[1200px] mx-auto space-y-6 pt-20">
           <TimeSelector defaultTime={selectedTime} onTimeChange={onTimeChange} />
 

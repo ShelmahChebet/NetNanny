@@ -20,7 +20,7 @@ model User {
     parent_phone_number String
     parent_email        String
 }
-model Messages {
+model Message {
     id        Int @id @default(autoincrement())
     user_id   Int
     text      String

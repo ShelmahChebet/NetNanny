@@ -1,36 +1,45 @@
-# React + TypeScript + Vite
+## Setup Instructions
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project runs on **Wasp**, so to get started, you'll need to install **Wasp**. You can find the quick setup instructions [here](https://wasp.sh/docs/quick-start).
 
-Currently, two official plugins are available:
+### Steps to Run the Project
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **Install Wasp:**
+   - Follow the setup instructions provided in the link above.
+   
+2. **Start Wasp:**
+   - After installing, run the following command:
+     ```bash
+     wasp start
+     ```
 
-## Expanding the ESLint configuration
+3. **Backend Setup:**
+   - Navigate to the `backend` folder:
+     ```bash
+     cd backend
+     ```
+   - Then, navigate to the scraper’s folder:
+     ```bash
+     cd scraper
+     ```
+   - Install the required dependencies:
+     ```bash
+     pip install -r requirements.txt
+     ```
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+4. **Run Flask Server:**
+   - In a separate terminal, navigate to the `backend/scraper` folder and run:
+     ```bash
+     python3 -m flask run
+     ```
 
-- Configure the top-level `parserOptions` property like this:
+5. **Set Up Chrome Extension:**
+   - Open Chrome extension tools and enable **Developer Mode**.
+   - Click on the **"Load unpacked"** button and select the `backend` folder.
+   - This will show the **NetNanny** browser extension on the browser extension panel.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+6. **Run Scrapers:**
+   - To run the scrapers, click on the corresponding button in the extension panel.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Now the project should be set up and running.
 
-
-
-### notes
-
-include: https://googlechromelabs.github.io/chrome-for-testing/#stable

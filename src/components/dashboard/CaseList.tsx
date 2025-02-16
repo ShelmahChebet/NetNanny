@@ -1,6 +1,6 @@
 import React from "react";
-import { Card } from  "../ui/card";
-import { Badge } from "../ui/badge";
+import { Card } from  "../ui/card";//"@/components/ui/card";
+import { Badge } from "../ui/badge"//"@/components/ui/badge";
 import {
   Accordion,
   AccordionContent,
@@ -27,32 +27,89 @@ interface CaseListProps {
   selectedTime?: string;
 }
 
-const defaultUser = {
-  name: "Sarah Wilson",
-  email: "sarah.wilson@example.com",
-  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
-};
+const todayCases: CaseItem[] = [
+  {
+    id: "1",
+    timestamp: "2024-03-21 14:30",
+    platform: "Instagram",
+    threatType: "Cyberbullying",
+    severity: "high",
+    description: "Multiple hostile comments detected on recent post",
+    aiAnalysis:
+      "Pattern indicates coordinated harassment from multiple accounts. Recommended actions: Report accounts, enable comment filtering.",
+    userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=1",
+  },
+  {
+    id: "2",
+    timestamp: "2024-03-21 12:15",
+    platform: "TikTok",
+    threatType: "Suspicious Contact",
+    severity: "medium",
+    description: "Unknown user attempting repeated contact",
+    aiAnalysis:
+      "Profile exhibits common grooming behavior patterns. Recommended action: Block user and report to platform.",
+    userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=2",
+  },
+];
+
+const weekCases: CaseItem[] = [
+  ...todayCases,
+  {
+    id: "3",
+    timestamp: "2024-03-20 15:45",
+    platform: "Snapchat",
+    threatType: "Privacy Risk",
+    severity: "medium",
+    description: "Location sharing enabled in multiple stories",
+    aiAnalysis:
+      "User has been sharing precise location data in stories. Recommended action: Review privacy settings and disable location sharing.",
+    userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=3",
+  },
+  {
+    id: "4",
+    timestamp: "2024-03-19 09:30",
+    platform: "Discord",
+    threatType: "Suspicious Link",
+    severity: "high",
+    description: "Potentially malicious link shared in DM",
+    aiAnalysis:
+      "Link analysis shows phishing attempt targeting gaming credentials. Recommended action: Block sender and enable link scanning.",
+    userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=4",
+  },
+];
+
+const monthCases: CaseItem[] = [
+  ...weekCases,
+  {
+    id: "5",
+    timestamp: "2024-03-15 11:20",
+    platform: "YouTube",
+    threatType: "Inappropriate Content",
+    severity: "high",
+    description: "Exposure to age-inappropriate content in recommendations",
+    aiAnalysis:
+      "Content filtering settings need adjustment. Recommended action: Enable restricted mode and review watch history.",
+    userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=5",
+  },
+  {
+    id: "6",
+    timestamp: "2024-03-10 16:45",
+    platform: "WhatsApp",
+    threatType: "Harassment",
+    severity: "medium",
+    description: "Repeated unwanted messages from unknown number",
+    aiAnalysis:
+      "Pattern suggests potential harassment. Recommended action: Block number and report to WhatsApp.",
+    userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=6",
+  },
+];
 
 const getCasesByTime = (selectedTime: string = "today") => {
-  const todayCases: CaseItem[] = [
-    {
-      id: "1",
-      timestamp: "2024-03-21 14:30",
-      platform: "Instagram",
-      threatType: "Cyberbullying",
-      severity: "high",
-      description: "Multiple hostile comments detected on recent post",
-      aiAnalysis:
-        "Pattern indicates coordinated harassment from multiple accounts. Recommended actions: Report accounts, enable comment filtering.",
-      userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=1",
-    },
-  ];
-
   switch (selectedTime) {
     case "week":
-      return todayCases;
+      return weekCases;
     case "month":
-      return todayCases;
+      return monthCases;
     default:
       return todayCases;
   }
@@ -70,22 +127,29 @@ const getSeverityColor = (severity: string) => {
       return "bg-gray-100 text-gray-800";
   }
 };
+const defaultUser = {
+  name: "Sarah Wilson",
+  email: "sarah.wilson@example.com",
+  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=sarah",
+};
 
 const CaseList = ({ selectedTime = "today" }: CaseListProps) => {
   const cases = getCasesByTime(selectedTime);
+
   return (
     <div className="min-h-screen bg-gray-100">
-      <DashboardHeader user={defaultUser} notifications={3} />
-      
-      {/* Add padding to prevent overlap */}
-      <div className="pt-24 w-full bg-white p-6 rounded-lg shadow">
+    <DashboardHeader user={defaultUser} notifications={3} />
+    
+    {/* Add padding to prevent overlap */}
+    <div className="pt-24 w-full bg-white p-6 rounded-lg shadow">
+      <div className="w-full bg-white p-6 rounded-lg shadow">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-semibold text-gray-800">Recent Cases</h2>
           <Badge variant="outline" className="px-3 py-1">
             {cases.length} Active Cases
           </Badge>
         </div>
-  
+
         <Accordion type="single" collapsible className="space-y-4">
           {cases.map((caseItem) => (
             <AccordionItem key={caseItem.id} value={caseItem.id}>
@@ -146,7 +210,8 @@ const CaseList = ({ selectedTime = "today" }: CaseListProps) => {
         </Accordion>
       </div>
     </div>
+  </div>
   );
 };
-  
+
 export default CaseList;

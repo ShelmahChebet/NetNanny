@@ -75,7 +75,7 @@ const ThreatStats = ({ data = defaultData }: ThreatStatsProps) => {
                       className="w-16 bg-blue-500 rounded-t"
                       style={{ height: `${(threat.count / 15) * 200}px` }}
                     />
-                    <span className="text-sm text-gray-600 -rotate-45 origin-top-left">
+                    <span className="text-sm text-gray-600  origin-top-left">
                       {threat.category}
                     </span>
                   </div>

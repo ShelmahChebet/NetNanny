@@ -70,9 +70,9 @@ const defaultCases = [
     platform: "Instagram",
     threatType: "Cyberbullying",
     severity: "high",
-    description: "Multiple hostile comments detected on recent post",
+    description: "Malc what the hell, I have a gun y'know",
     aiAnalysis:
-      allMessages[0].analysis,
+      "Violent and aggressive behaviour detected. Suggested action: Block and report to authorities.",
     userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=1",
   },
   {
@@ -81,9 +81,9 @@ const defaultCases = [
     platform: "TikTok",
     threatType: "Suspicious Contact",
     severity: "medium",
-    description: "Unknown user attempting repeated contact",
+    description: "I HATE YOU",
     aiAnalysis:
-      "Profile exhibits common grooming behavior patterns. Recommended action: Block user and report to platform.",
+      "Angry behaviour detected. Recommended action: Block user and remain cautious around them.",
     userAvatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=2",
   },
 ];

@@ -45,3 +45,5 @@ backend/.DS_Store
 backend/scraper/.venv/
 backend/scraper/~/
 .DS_Store
+
+.env

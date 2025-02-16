@@ -9,7 +9,7 @@ export const handleData: HandleData = async (req: Request, res: Response, contex
     const data  = req.body;
     console.log("Data:", data);
     // Process the data (modify this based on your use case)
-    const processedData = postMessage(data.text, data.user_id, data.analysis, data.suspicious_name);
+    const processedData = await postMessage(data.text, data.user_id, data.analysis, data.suspicious_name);
     console.log("Processed data:", processedData);
     res.status(200).json({ message: "Data processed successfully", processedData });
   } catch (error) {

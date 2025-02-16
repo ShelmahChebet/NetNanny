@@ -18,7 +18,7 @@ CHILD_SCHOOL = "Toronto Elementary School"
 def wait_and_find_element(driver, by, value, timeout=5):
     """Utility function to wait for and find an element"""
     try:
-        time.sleep(2)
+        time.sleep(1)
         element = WebDriverWait(driver, timeout).until(
             EC.presence_of_element_located((by, value))
         )
@@ -69,7 +69,7 @@ def click_all_messages(driver):
     """
     try:
         # Wait for messages to load
-        WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.XPATH, "//div[@role='listitem']"))
         )
         
@@ -89,7 +89,7 @@ def click_all_messages(driver):
                 messages = get_messages()
                 
                 # Wait for message to be clickable
-                message = WebDriverWait(driver, 10).until(
+                message = WebDriverWait(driver, 5).until(
                     EC.element_to_be_clickable(messages[i])
                 )
                 
@@ -139,7 +139,7 @@ def click_all_messages(driver):
                                     analysis = analyseBad(message_text)
                                     # if messages is bad or returns true
                                     pushToDatabase(username, analysis, message_text)
-                                    print("Message is a threat")
+                                    print("Message is a threat, sent to database")
                                     # should push to the database
                                 else:
                                    print("Message is not a threat")
@@ -249,7 +249,7 @@ def main():
         if messages_button:
             messages_button.click()
             print("Successfully navigated to messages")
-            time.sleep(5)
+            time.sleep(2)
         
             not_nowbutton(driver, 5)
             #handle_notification_modal(driver)
@@ -260,7 +260,7 @@ def main():
             return "An error occured. Please try again later."
     
         # Add a wait here if you need to do more operations
-        time.sleep(4)
+        time.sleep(2)
 
     except Exception as e:
         return "An error occurred: {e}. Please try again later."

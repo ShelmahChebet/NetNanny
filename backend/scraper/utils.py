@@ -10,20 +10,40 @@ import requests
 import re
 
 
-def extract_json(response_text):
+# def extract_json(response_text):
+#     """
+#     Extracts a JSON object from a string using regex.
+#     """
+#     # Look for a JSON object in the response text
+#     json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+#     if json_match:
+#         try:
+#             # Attempt to parse the extracted JSON
+#             return json.loads(json_match.group(0))
+#         except json.JSONDecodeError:
+#             # If parsing fails, return None
+#             return None
+#     return None
+
+def extract_json_objects(response_text):
     """
-    Extracts a JSON object from a string using regex.
+    Extracts all JSON objects from a string using regex.
     """
-    # Look for a JSON object in the response text
-    json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
-    if json_match:
+    json_pattern = r'\{.*?\}'  # Non-greedy match to avoid capturing too much
+    matches = re.findall(json_pattern, response_text, re.DOTALL)
+
+    valid_json_objects = []
+    
+    for match in matches:
         try:
-            # Attempt to parse the extracted JSON
-            return json.loads(json_match.group(0))
+            json_obj = json.loads(match)  # Validate JSON format
+            if isinstance(json_obj, dict):  # Ensure it's a dictionary
+                valid_json_objects.append(json_obj)
         except json.JSONDecodeError:
-            # If parsing fails, return None
-            return None
-    return None
+            continue  # Skip invalid JSON
+
+    return valid_json_objects[0]
+
 
 def pushToDatabase(user_name, analysis, text):
     try:
@@ -35,6 +55,7 @@ def pushToDatabase(user_name, analysis, text):
             "analysis": analysis["analysis"],
             "text": text
         }
+        print("the payload is: ", payload)
 
         headers = {
             "Content-Type": "application/json"
@@ -111,6 +132,33 @@ def checkMessagesBad(message, name, age, school, phone, email):
     except Exception as err:
         print("An error occured: ", err)
         
+def extract_json_objects(text):
+    # Regular expression to find JSON-like objects
+    json_pattern = r'\{.*?\}'
+    matches = re.findall(json_pattern, text, re.DOTALL)
+    
+    valid_objects = []
+    
+    for match in matches:
+        try:
+            obj = json.loads(match)  # Try parsing as JSON
+            if isinstance(obj, dict):  # Ensure it's a dictionary
+                valid_objects.append(json.dumps(obj, separators=(',', ':')))  # Normalize format
+        except json.JSONDecodeError:
+            continue  # Ignore invalid JSON
+
+    return valid_objects
+
+def check_threat_objects(text):
+    extracted_jsons = extract_json_objects(text)
+    
+    threat_formats = ['{"isThreat":true}', '{"isThreat":false}']
+    
+    for obj in extracted_jsons:
+        if obj in threat_formats:
+            return True
+    
+    return False
 
 def analyseBad(message):
     load_dotenv()

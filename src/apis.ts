@@ -6,7 +6,7 @@ import { prisma } from 'wasp/server'
 export const handleData: HandleData = async (req: Request, res: Response, context) => {
   try {
     console.log("Received data:", req.body);
-    const { data } = req.body;
+    const data  = req.body;
     console.log("Data:", data);
     // Process the data (modify this based on your use case)
     const processedData = postMessage(data.text, data.user_id, data.analysis, data.suspicious_name);
@@ -17,6 +17,7 @@ export const handleData: HandleData = async (req: Request, res: Response, contex
     res.status(500).json({ error: "Internal server error." });
   }
 };
+
 
 async function postMessage(
   text: string,

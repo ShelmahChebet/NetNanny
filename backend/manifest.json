@@ -10,12 +10,5 @@
   },
   "content_security_policy": {
       "extension_pages": "script-src 'self'; object-src 'none'"
-  },
-  "icons": [
-    {
-      "src": "./public/NetNannyMascot.svg",
-      "sizes": "any",
-      "type": "svg"
-    }
-  ]
+  }
 }

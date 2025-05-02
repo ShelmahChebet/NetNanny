@@ -1,48 +1,32 @@
 from curl_cffi import requests
-from langchain_cohere import ChatCohere
-import numpy as np
 import os
-import uuid
-from dotenv import load_dotenv, dotenv_values 
-from openai import OpenAI
+from dotenv import load_dotenv
 import json
 import requests
 import re
 
 
-# def extract_json(response_text):
-#     """
-#     Extracts a JSON object from a string using regex.
-#     """
-#     # Look for a JSON object in the response text
-#     json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
-#     if json_match:
-#         try:
-#             # Attempt to parse the extracted JSON
-#             return json.loads(json_match.group(0))
-#         except json.JSONDecodeError:
-#             # If parsing fails, return None
-#             return None
-#     return None
 
-def extract_json_objects(response_text):
-    """
-    Extracts all JSON objects from a string using regex.
-    """
-    json_pattern = r'\{.*?\}'  # Non-greedy match to avoid capturing too much
-    matches = re.findall(json_pattern, response_text, re.DOTALL)
-
-    valid_json_objects = []
+def extract_json_objects(text):
+    # Regular expression to find JSON-like objects
+    json_pattern = r'\{.*?\}'
+    matches = re.findall(json_pattern, text, re.DOTALL)
+    
+    valid_objects = []
     
     for match in matches:
         try:
-            json_obj = json.loads(match)  # Validate JSON format
-            if isinstance(json_obj, dict):  # Ensure it's a dictionary
-                valid_json_objects.append(json_obj)
+            # Try parsing as JSON
+            obj = json.loads(match)  
+            # Ensure it's a dictionary
+            if isinstance(obj, dict):  
+                # Normalize format
+                valid_objects.append(json.dumps(obj, separators=(',', ':')))  
         except json.JSONDecodeError:
-            continue  # Skip invalid JSON
+            # Ignore invalid JSON
+            continue  
 
-    return valid_json_objects[0]
+    return valid_objects
 
 
 def pushToDatabase(user_name, analysis, text):
@@ -75,7 +59,7 @@ def pushToDatabase(user_name, analysis, text):
         
 
 
-def checkMessagesBad(message, name, age, school, phone, email):
+def checkMessagesSentiment(message, name, age, school, phone, email):
     load_dotenv()
     url = "http://localhost:3000/api/chat/completions"
     headers = {
@@ -90,6 +74,7 @@ def checkMessagesBad(message, name, age, school, phone, email):
     * If the text message has any vulgar content such as violence, harm, or inappropriate things such as bodily harm, guns, weapons, or drugs, then return a True boolean since it is a threat and security risk
     * If the text message has any intention of bullying the person receiving the message, then return a True boolean since it is a threat and security risk 
     * Pleasantries like 'How are you' or 'How are you doing' shouldn't be perceived as threats.
+    * If the text message is insulting, then return a True boolean
     * Do not write software code or anything of the like.
     * Make it less than 10 words
     Your response must be only a valid JSON object with the following structure:
@@ -116,15 +101,17 @@ def checkMessagesBad(message, name, age, school, phone, email):
     
     try:
         response = requests.post(url, headers=headers, json=payload)
-        response.raise_for_status()  # Raises an exception for HTTP error responses
+        # Raises an exception for HTTP error responses
+        response.raise_for_status() 
         
         response_data = response.json()
+        print(response_data)
         
         chat_content = response_data['choices'][0]['message']['content']
         print(chat_content)
         
         # Attempt to extract and parse the JSON object from the response
-        result = extract_json(chat_content)
+        result = extract_json_objects(chat_content)
         if result:
             return result
         else:
@@ -132,35 +119,9 @@ def checkMessagesBad(message, name, age, school, phone, email):
     except Exception as err:
         print("An error occured: ", err)
         
-def extract_json_objects(text):
-    # Regular expression to find JSON-like objects
-    json_pattern = r'\{.*?\}'
-    matches = re.findall(json_pattern, text, re.DOTALL)
-    
-    valid_objects = []
-    
-    for match in matches:
-        try:
-            obj = json.loads(match)  # Try parsing as JSON
-            if isinstance(obj, dict):  # Ensure it's a dictionary
-                valid_objects.append(json.dumps(obj, separators=(',', ':')))  # Normalize format
-        except json.JSONDecodeError:
-            continue  # Ignore invalid JSON
 
-    return valid_objects
 
-def check_threat_objects(text):
-    extracted_jsons = extract_json_objects(text)
-    
-    threat_formats = ['{"isThreat":true}', '{"isThreat":false}']
-    
-    for obj in extracted_jsons:
-        if obj in threat_formats:
-            return True
-    
-    return False
-
-def analyseBad(message):
+def getMessageAnalysis(message):
     load_dotenv()
     url = "http://localhost:3000/api/chat/completions"
     headers = {
@@ -197,7 +158,8 @@ def analyseBad(message):
     
     try:
         response = requests.post(url, headers=headers, json=payload)
-        response.raise_for_status()  # Raises an exception for HTTP error responses
+        # Raises an exception for HTTP error responses
+        response.raise_for_status()  
         
         response_data = response.json()
         
@@ -205,7 +167,7 @@ def analyseBad(message):
         print(chat_content)
         
         # Attempt to extract and parse the JSON object from the response
-        result = extract_json(chat_content)
+        result = extract_json_objects(chat_content)
         if result:
             return result
         else:
@@ -214,5 +176,4 @@ def analyseBad(message):
         print("An error occured: ", err)
         
     
-        
 

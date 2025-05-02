@@ -3,12 +3,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
-from utils import checkMessagesBad, pushToDatabase, analyseBad
+from utils import checkMessagesSentiment, pushToDatabase, getMessageAnalysis
 import time
 from dotenv import load_dotenv
 import os
 
-
+# For testing purposes
 CHILD_NAME = "Malcom"
 CHILD_AGE = 6
 CHILD_EMAIL = "malcomauben@gmail.com"
@@ -16,7 +16,7 @@ CHILD_PHONE = 6138796342
 CHILD_SCHOOL = "Toronto Elementary School"
 
 def wait_and_find_element(driver, by, value, timeout=5):
-    """Utility function to wait for and find an element"""
+    # Utility function to wait for and find an element
     try:
         time.sleep(1)
         element = WebDriverWait(driver, timeout).until(
@@ -28,16 +28,8 @@ def wait_and_find_element(driver, by, value, timeout=5):
         return None
 
 def handle_notification_modal(driver, timeout=10):
-    """
-    Detects and handles Instagram's notification modal by clicking the 'Not Now' button.
-    
-    Args:
-        driver: Selenium WebDriver instance
-        timeout: Maximum time to wait for the modal in seconds (default: 10)
-        
-    Returns:
-        bool: True if modal was found and handled, False if modal didn't appear
-    """
+    # Detects and handles Instagram's notification modal by clicking the 'Not Now' button.
+    # Returns True if modal was found and closed, False if modal didn't appear
     try:
         # Wait for either the modal div or the "Not Now" button to be visible
         modal = WebDriverWait(driver, timeout).until(
@@ -64,10 +56,9 @@ def handle_notification_modal(driver, timeout=10):
         return False
 
 def click_all_messages(driver):
-    """
-    Clicks through all messages in Instagram DM list with delay
-    """
+    # Clicks through all messages in Instagram DM list with delay
     try:
+        print("clicking through all messages...")
         # Wait for messages to load
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.XPATH, "//div[@role='listitem']"))
@@ -130,39 +121,28 @@ def click_all_messages(driver):
                     for bubble in message_bubbles:
                         try:
                             message_text = bubble.text.strip()
-                            if message_text and not message_text.isspace():  # Only print non-empty messages
+                            # Make sure to only print non-empty messages
+                            if message_text and not message_text.isspace():  
                                 print(f"Message: {message_text}")
-                                # check if the message is bad
-                                message_result = checkMessagesBad(message_text, CHILD_NAME, CHILD_AGE, CHILD_SCHOOL, CHILD_PHONE, CHILD_EMAIL)
+                                # Check if the message seems like a threat
+                                message_result = checkMessagesSentiment(message_text, CHILD_NAME, CHILD_AGE, CHILD_SCHOOL, CHILD_PHONE, CHILD_EMAIL)
+                                # If message is threatening, push it to prisma database
                                 if(message_result['isThreat'] == True):
                                     # Get analysis
-                                    analysis = analyseBad(message_text)
-                                    # if messages is bad or returns true
+                                    analysis = getMessageAnalysis(message_text)
                                     pushToDatabase(username, analysis, message_text)
                                     print("Message is a threat, sent to database")
-                                    # should push to the database
                                 else:
                                    print("Message is not a threat")
-                                    
                         except Exception as e:
                             print(f"Error extracting individual message: {str(e)}")
                             continue
-    
-                    # If still no messages found, print the page source for debugging
-                    if not any(bubble.text.strip() for bubble in message_bubbles):
-                        print("No message text found. Current element structure:")
-                        messages_container = driver.find_element(By.XPATH, "//div[@role='presentation']")
-                        print(messages_container.get_attribute('innerHTML'))
-        
+
                 except Exception as e:
                     print(f"Error extracting messages: {str(e)}")
                 
-                # Wait before next message
-                #print("Waiting 3 seconds...")
-                #time.sleep(3)
-                
             except StaleElementReferenceException:
-                print("Message element became stale, skipping to next")
+                print("Message element became stale, skipping to next message")
                 continue
             except Exception as e:
                 print(f"Error clicking message {i+1}: {str(e)}")
@@ -218,6 +198,7 @@ def not_nowbutton(driver, timeout):
 def main():
     try:
         load_dotenv()
+        print("running program", flush=True)
         # Initialize driver
         driver = webdriver.Firefox()
         driver.get('https://www.instagram.com/direct/inbox/')
@@ -237,7 +218,7 @@ def main():
     
         # Wait for navigation and save login info prompt
         not_nowbutton(driver,5)
-        #handle_notification_modal(driver)
+        handle_notification_modal(driver)
     
         # Wait for and click messages button - using a more reliable selector
         messages_button = wait_and_find_element(
@@ -247,23 +228,22 @@ def main():
         )
     
         if messages_button:
+            print("going to click messages button")
             messages_button.click()
             print("Successfully navigated to messages")
             time.sleep(2)
-        
+            print("going to click not now button")
             not_nowbutton(driver, 5)
             #handle_notification_modal(driver)
-        
+            print("going to click through all messages")
             click_all_messages(driver)
             return "Check your dashboard now."
         else:
             return "An error occured. Please try again later."
     
-        # Add a wait here if you need to do more operations
-        time.sleep(2)
 
     except Exception as e:
-        return "An error occurred: {e}. Please try again later."
+        return f"An error occurred: {str(e)}. Please try again later."
 
     finally:
         driver.quit()

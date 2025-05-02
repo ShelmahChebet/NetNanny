@@ -175,10 +175,5 @@ def getMessageAnalysis(message):
         print("An error occured: ", err)
 
 
-def main():
-    getMessageAnalysis("You suck so bad I hate you")
-    
-if __name__ == '__main__':
-    main()
-    
+
 

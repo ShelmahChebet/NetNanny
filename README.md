@@ -38,12 +38,21 @@ This project runs on **Wasp**, so to get started, you'll need to install **Wasp*
      python3 -m flask run
      ```
 
-5. **Set Up Chrome Extension:**
+5. **Set Up Open Web UI Docker Container:**
+   - Assuming Deepseek R1 1.5b is running locally using Ollama
+   - Start your Docker Daemon
+   - Run this Docker command in your terminal to start the Open Web UI server to make calls to the Deepseek model
+    ```bash
+     docker run -d -p 3000:8080 --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+     ```
+   - Go to http://localhost:3000 and make an account to use Open Web UI
+
+6. **Set Up Chrome Extension:**
    - Open Chrome extension tools and enable **Developer Mode**.
    - Click on the **"Load unpacked"** button and select the `backend` folder.
    - This will show the **NetNanny** browser extension on the browser extension panel.
 
-6. **Run Scrapers:**
+7. **Run Scrapers:**
    - To run the scrapers, click on the corresponding button in the extension panel.
 
 Now the project should be set up and running.

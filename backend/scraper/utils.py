@@ -2,14 +2,13 @@ from curl_cffi import requests
 import os
 from dotenv import load_dotenv
 import json
-import requests
 import re
 
 
 
 def extract_json_objects(text):
     # Regular expression to find JSON-like objects
-    json_pattern = r'\{.*?\}'
+    json_pattern = r'\{.?\}'
     matches = re.findall(json_pattern, text, re.DOTALL)
     
     valid_objects = []
@@ -174,6 +173,12 @@ def getMessageAnalysis(message):
             return {"error": "No valid JSON found in the model's response"}
     except Exception as err:
         print("An error occured: ", err)
-        
+
+
+def main():
+    getMessageAnalysis("You suck so bad I hate you")
+    
+if __name__ == '__main__':
+    main()
     
 

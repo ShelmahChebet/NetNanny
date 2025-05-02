@@ -8,7 +8,9 @@ import re
 
 def extract_json_objects(text):
     # Regular expression to find JSON-like objects
+    # Matches as few characters as possible (Non-greedy matching)
     json_pattern = r'\{.?\}'
+    # Matches json objects that span multiple lines through the use of the flag re.DOTALL
     matches = re.findall(json_pattern, text, re.DOTALL)
     
     valid_objects = []
@@ -19,7 +21,7 @@ def extract_json_objects(text):
             obj = json.loads(match)  
             # Ensure it's a dictionary
             if isinstance(obj, dict):  
-                # Normalize format
+                # Convert obj to JSON string using json.dumps(), ensuring consistent format
                 valid_objects.append(json.dumps(obj, separators=(',', ':')))  
         except json.JSONDecodeError:
             # Ignore invalid JSON
@@ -84,6 +86,7 @@ def checkMessagesSentiment(message, name, age, school, phone, email):
      """ % (name, age, school, phone, email)
     
     model = "deepseek-r1:1.5b"
+    # request body sent to Open Web UI API
     payload = {
         "model": model,
         "messages": [
@@ -141,6 +144,7 @@ def getMessageAnalysis(message):
      """ 
     
     model = "deepseek-r1:1.5b"
+    # request body sent to Open Web UI API
     payload = {
         "model": model,
         "messages": [
